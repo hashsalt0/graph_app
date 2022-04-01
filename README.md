@@ -28,6 +28,7 @@ Operations:
 4. Get the descendants of a node, passing the node id as input parameter.
 5. Delete dependency from a tree, passing parent node id and child node id.
 6. Delete a node from a tree, passing node id as input parameter. This should delete all the dependencies  of the node.
+<!-- should this thow an exeption when dependency is already present -->
 7. Add a new dependency to a tree, passing parent node id and child node id. This should check for cyclic dependencies.
 8. Add a new node to tree. This node will have no parents and children. Dependency will be established by calling the 7 number API.
  
