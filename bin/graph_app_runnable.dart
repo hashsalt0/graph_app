@@ -1,21 +1,21 @@
+import 'dart:io';
+
 import 'menu/main_menu.dart';
 import 'utils/logger.dart';
 import 'utils/store.dart';
+import 'utils/utils.dart';
 
 class GraphAppRunnable {
   GraphAppRunnable();
-  /// executes the main menu indefinitely 
+
+  /// executes the main menu indefinitely
   void run() {
     while (Store.instance.isRunning) {
-      try {
-        // Stupid mistake each time main menu was supposed to recreated.
+      Utils.catchError(() {
+        Log.help("\n"+"-"*stdout.terminalColumns+"\n");
         MainMenu mainMenu = MainMenu();
         mainMenu.execute();
-      } catch (e, stackTrace) {
-        Log.error("Fatal Error has occured");
-        Log.error(e);
-        Log.error(stackTrace);
-      }
+      });
     }
   }
 }

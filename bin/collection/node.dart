@@ -20,6 +20,11 @@ class Node implements Comparable {
     return ancestor;
   }
 
+  @override
+  String toString(){
+    return "Node Id: $nodeId, Name: $nodeName";
+  }
+
   Set<Node> getDescendantNodes() {
     HashSet<Node> descendant = HashSet();
     descendant.addAll(children);

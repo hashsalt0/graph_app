@@ -1,4 +1,6 @@
 
+import 'dart:collection';
+
 import 'package:test/test.dart';
 
 import '../bin/collection/graph.dart';
@@ -25,12 +27,15 @@ void main() {
     graph.addDepedency(parentId: 5, childId: 7);
     graph.deleteNode(3);
     expect(() => graph.getNodeWithId(3), throwsException);
-    expect(() => graph.getNodeWithId(4), throwsException);
+    
+    expect(graph.getNodeWithId(4) == Node(id: 4), true);
+    expect(equalSet(graph.getNodeWithId(4).getAncestorNodes(), {Node(id: 2), Node(id: 1)}), true);
     expect(graph.getNodeWithId(5) == Node(id: 5), true);
     expect(graph.getNodeWithId(6) == Node(id: 6), true);
     expect(graph.getNodeWithId(2) == Node(id: 2), true);
     expect(graph.getNodeWithId(1) == Node(id: 1), true);
     expect(graph.getNodeWithId(7) == Node(id: 7), true);
+    graph.deleteNode(4);
     expect(equalSet(graph.getNodeWithId(1).getDescendantNodes(), {Node(id: 2)}),
         true);
     expect(equalSet(graph.getNodeWithId(6).getDescendantNodes(), {Node(id: 7)}),
@@ -51,15 +56,6 @@ bool equalSet(var set1, var set2) {
       set1.length != set2.length) {
     return false;
   }
-
-  // check if elements are equal
-  Iterator it1 = set1.iterator;
-  Iterator it2 = set2.iterator;
-  while (it1.moveNext() && it2.moveNext()) {
-    if (it1.current != it2.current) {
-      return false;
-    }
-  }
-
-  return true;
+  Set ans = set1.difference(set2);
+  return ans.isEmpty == true;
 }

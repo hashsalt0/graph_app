@@ -1,4 +1,5 @@
 
+import '../../utils/logger.dart';
 import 'menu.dart';
 import 'field.dart';
 import 'single_value_field.dart';
@@ -20,6 +21,9 @@ class Entry extends Menu {
   /// Reading all the [Field]  in [fields]
   @override
   void execute() {
+    Log.info("");
+    Log.help(name);
+    Log.info("");
     for (var field in fields.values) {
       field.readValue();
     }

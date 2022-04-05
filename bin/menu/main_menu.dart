@@ -8,40 +8,40 @@ import 'base/menu.dart';
 
 class MainMenu extends Choice {
   MainMenu() : super('') {
-    addMenu(NodeOperationMenu(
+    addMenu(_NodeOperationMenu(
         name: "Get the immediate parents of a node",
         operation: (Node n) => _printNodes("Immediate parents", n.parent, n.nodeId)));
-    addMenu(NodeOperationMenu(
+    addMenu(_NodeOperationMenu(
         name: "Get the immediate children of a node",
         operation: (Node n) => _printNodes("Immediate children", n.children, n.nodeId)));
-    addMenu(NodeOperationMenu(
+    addMenu(_NodeOperationMenu(
         name: "Get the ancestors of a node",
         operation: (Node n) => _printNodes("Ancestors", n.getAncestorNodes(), n.nodeId)));
-    addMenu(NodeOperationMenu(
+    addMenu(_NodeOperationMenu(
         name: "Get the descendants of a node",
         operation: (Node n) => _printNodes("Descendants", n.getDescendantNodes(), n.nodeId)));
-    addMenu(ParentChildOperationMenu(
+    addMenu(_ParentChildOperationMenu(
         name: "Delete dependency from a tree",
         operation: ({required int parentId, required int childId}) {
           Store.instance.graph.removeDepedency(parentId: parentId, childId: childId);
           Log.info(
               "Removed dependency from parent $parentId to child $childId");
         }));
-    addMenu(NodeOperationMenu(
+    addMenu(_NodeOperationMenu(
         name: "Delete a node from a tree",
         operation: (Node n) {
           Store.instance.graph.deleteNode(n.nodeId);
           Log.info("Deleted node with id ${n.nodeId}");
         }));
-    addMenu(ParentChildOperationMenu(
+    addMenu(_ParentChildOperationMenu(
         name: "Add a new dependency to a tree",
         operation: ({required int parentId, required int childId}) {
           Store.instance.graph.addDepedency(parentId: parentId, childId: childId);
           Log.info(
               "Added a dependency from parent $parentId to child $childId");
         }));
-    addMenu(AddNodeMenu());
-    addMenu(ExitMenu());
+    addMenu(_AddNodeMenu());
+    addMenu(_ExitMenu());
   }
 
   void _printNodes(String message, Set<Node> nodes, int nodeId){
@@ -50,8 +50,8 @@ class MainMenu extends Choice {
   }
 }
 
-class ExitMenu extends Menu{
-  ExitMenu() : super("Exit");
+class _ExitMenu extends Menu{
+  _ExitMenu() : super("Exit");
 
   @override
   void execute() {
@@ -61,8 +61,8 @@ class ExitMenu extends Menu{
 
 }
 
-class AddNodeMenu extends Entry{
-  AddNodeMenu() : super("Add a new node to tree"){
+class _AddNodeMenu extends Entry{
+  _AddNodeMenu() : super("Add a new node to tree"){
     addField(Const.nodeIdField);
     addField(Const.nodeNameField);
   }
@@ -73,14 +73,15 @@ class AddNodeMenu extends Entry{
     int id = fields[Const.nodeIdSerial]?.value as int;
     String name = fields[Const.nodeNameSerial]?.value as String;
     Store.instance.graph.addNode(id: id, name: name);
+    Log.help("Sucessfully added node to the grap. ${Store.instance.graph.getNodeWithId(id)}");
   }
 }
 
 
-class NodeOperationMenu extends Entry {
+class _NodeOperationMenu extends Entry {
   final void Function(Node node) _operation;
 
-  NodeOperationMenu(
+  _NodeOperationMenu(
       {required String name,
       required void Function(Node node) operation})
       : _operation = operation,
@@ -96,24 +97,24 @@ class NodeOperationMenu extends Entry {
   }
 }
 
-class ParentChildOperationMenu extends Entry {
+class _ParentChildOperationMenu extends Entry {
   final void Function({required int parentId, required int childId}) _operation;
 
-  ParentChildOperationMenu(
+  _ParentChildOperationMenu(
       {required String name,
       required void Function({required int parentId, required int childId})
           operation})
       : _operation = operation,
         super(name) {
-    addField(Const.childIdField);
     addField(Const.parentIdField);
+    addField(Const.childIdField);
   }
 
   @override
   void execute() {
     super.execute();
-    int childId = fields[Const.parentIdSerial]?.value as int;
-    int parentId = fields[Const.childIdSerial]?.value as int;
+    int parentId = fields[Const.parentIdSerial]?.value as int;
+    int childId = fields[Const.childIdSerial]?.value as int;
     _operation(parentId: parentId, childId: childId);
   }
 }

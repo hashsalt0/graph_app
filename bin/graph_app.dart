@@ -1,3 +1,5 @@
-void main(List<String> arguments) {
-  print('Hello world!');
+import 'graph_app_runnable.dart';
+
+void main() {
+  GraphAppRunnable().run();
 }

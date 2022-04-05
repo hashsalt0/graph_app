@@ -14,6 +14,6 @@ class Const {
   static SingleValueField<int> parentIdField = SingleValueField<int>(name: Const.parentIdSerial, message: "Enter a the parent node id", cast: Utils.castToInt, validate: Validations.none);
   static SingleValueField<int> childIdField = SingleValueField<int>(name: Const.childIdSerial, message: "Enter a the child node id", cast: Utils.castToInt, validate: Validations.none);
 
-  static SingleValueField<String> nodeNameField = SingleValueField<String>(name: Const.nodeNameSerial, message: "Enter a the child node id", cast: Utils.castToString, validate: Validations.none);
+  static SingleValueField<String> nodeNameField = SingleValueField<String>(name: Const.nodeNameSerial, message: "Enter a the node name", cast: Utils.castToString, validate: Validations.none);
     
 }
