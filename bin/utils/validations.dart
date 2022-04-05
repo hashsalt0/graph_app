@@ -1,8 +1,7 @@
 
-import '../menu/base/field.dart';
-
-/// Validations rules for [Field] throws [GraphAppException]
+/// Validations rules
 class Validations {
+  // function that returns true always
   static bool none(dynamic s){
     return true;
   }

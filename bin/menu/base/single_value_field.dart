@@ -1,13 +1,16 @@
 import '../../utils/input.dart';
 import '../../utils/logger.dart';
 import '../../utils/utils.dart';
+import '../../utils/validations.dart';
 import 'field.dart';
 import 'entry.dart';
 
 /// A Type of [Field] for [Entry] classes. It accepts a [T] value.
 
 class SingleValueField<T> extends Field<T> {
-  SingleValueField({required String name, required String message, required this.cast, required this.validate})
+
+  /// Single value field default valdiation is none ie. accepts any value 
+  SingleValueField({required String name, required String message, required this.cast, this.validate = Validations.none })
       : super(name: name, message: message);
 
   /// validate function (not necessary to provide)

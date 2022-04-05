@@ -11,7 +11,7 @@ class Utils {
       return true;
     } on GraphAppException catch (e, stackTrace) {
       Log.help(e.message);
-      Log.help(e.cause);
+      Log.help("because ${e.cause}");
       Log.debug(e);
       Log.debug(stackTrace);
     } catch (e, stackTrace) {
