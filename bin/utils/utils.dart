@@ -1,6 +1,7 @@
 import '../exceptions/cast_exception.dart';
 import '../exceptions/graph_app_exception.dart';
 import 'logger.dart';
+import 'strings.dart';
 
 class Utils {
   static String castToString(String? text) => text.toString();
@@ -25,7 +26,7 @@ class Utils {
     try {
       return int.parse(text ?? "");
     } catch (e) {
-      throw CastException("Invalid integer");
+      throw CastException(Strings.invalidInteger);
     }
   }
 

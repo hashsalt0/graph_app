@@ -37,7 +37,7 @@ class Node implements Comparable {
 
   @override
   String toString(){
-    return "Node Id: $nodeId, Name: $nodeName";
+    return "[node Id: $nodeId, name: $nodeName]";
   }
 
   @override

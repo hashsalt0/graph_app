@@ -1,6 +1,7 @@
 import '../../exceptions/invalid_choice_exception.dart';
 import '../../utils/input.dart';
 import '../../utils/logger.dart';
+import '../../utils/strings.dart';
 import 'menu.dart';
 
 /// Type of [Menu] that has a list of sub menus and it accepts a choice to be
@@ -27,7 +28,7 @@ class Choice extends Menu {
   /// Reads an integer value until it is passes validation.
   int _readChoice() {
     Log.info("Enter choice less than ${_subMenus.length + 1} :: ");
-    String? _value = Input.readLine() ?? "unknown";
+    String? _value = Input.readLine() ?? Strings.unknown;
     int? choice = int.tryParse(_value);
     // validate choice
     if (choice == null || choice <= 0 || choice > _subMenus.length) {

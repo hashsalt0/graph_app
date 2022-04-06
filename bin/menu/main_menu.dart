@@ -2,56 +2,63 @@ import '../collection/node.dart';
 import '../utils/const.dart';
 import '../utils/logger.dart';
 import '../utils/store.dart';
+import '../utils/strings.dart';
 import 'base/choice.dart';
 import 'base/entry.dart';
 import 'base/menu.dart';
 
 class MainMenu extends Choice {
-  MainMenu() : super('') {
-    addMenu(_NodeOperationMenu(
-        name: "Get the immediate parents of a node",
-        operation: (Node n) => _printNodes("Immediate parents", n.parent, n.nodeId)));
-    addMenu(_NodeOperationMenu(
-        name: "Get the immediate children of a node",
-        operation: (Node n) => _printNodes("Immediate children", n.children, n.nodeId)));
-    addMenu(_NodeOperationMenu(
-        name: "Get the ancestors of a node",
-        operation: (Node n) => _printNodes("Ancestors", n.getAncestorNodes(), n.nodeId)));
-    addMenu(_NodeOperationMenu(
-        name: "Get the descendants of a node",
-        operation: (Node n) => _printNodes("Descendants", n.getDescendantNodes(), n.nodeId)));
-    addMenu(_ParentChildOperationMenu(
-        name: "Delete dependency from a tree",
+  static final _menus = [_NodeOperationMenu(
+        name: Strings.menuOptParents,
+        operation: (Node n) => _printNodes("Immediate parents", n.parent, n.nodeId)),
+        _NodeOperationMenu(
+        name: Strings.menuOptChildrens,
+        operation: (Node n) => _printNodes("Immediate children", n.children, n.nodeId)),
+        _NodeOperationMenu(
+        name: Strings.menuOptAncestors,
+        operation: (Node n) => _printNodes("Ancestors", n.getAncestorNodes(), n.nodeId)),
+        _NodeOperationMenu(
+        name: Strings.menuOptDescendants,
+        operation: (Node n) => _printNodes("Descendants", n.getDescendantNodes(), n.nodeId)),
+        _ParentChildOperationMenu(
+        name: Strings.menuOptDeleteDependency,
         operation: ({required int parentId, required int childId}) {
           Store.instance.graph.removeDepedency(parentId: parentId, childId: childId);
           Log.info(
               "Removed dependency from parent $parentId to child $childId");
-        }));
-    addMenu(_NodeOperationMenu(
-        name: "Delete a node from a tree",
+        }),
+        _NodeOperationMenu(
+        name: Strings.menuOptDeleteNode,
         operation: (Node n) {
           Store.instance.graph.deleteNode(n.nodeId);
           Log.info("Deleted node with id ${n.nodeId}");
-        }));
-    addMenu(_ParentChildOperationMenu(
-        name: "Add a new dependency to a tree",
+        }),
+        _ParentChildOperationMenu(
+        name: Strings.menuOptAddDependency,
         operation: ({required int parentId, required int childId}) {
           Store.instance.graph.addDepedency(parentId: parentId, childId: childId);
-          Log.info(
-              "Added a dependency from parent $parentId to child $childId");
-        }));
-    addMenu(_AddNodeMenu());
-    addMenu(_ExitMenu());
+          Log.info("Added a dependency from parent $parentId to child $childId");
+        }),
+        _AddNodeMenu(),
+        _ExitMenu()
+  ];
+
+  MainMenu() : super(Strings.appName) {
+    _initializeMenus();
   }
 
-  void _printNodes(String message, Set<Node> nodes, int nodeId){
+  void _initializeMenus(){
+    _menus.forEach(addMenu);
+  }
+
+  static void _printNodes(String message, Set<Node> nodes, int nodeId){
     Log.help("$message of the node with id $nodeId are -");
     Log.info(nodes);
   }
 }
 
 class _ExitMenu extends Menu{
-  _ExitMenu() : super("Exit");
+  _ExitMenu() : super(Strings.menuOptExit);
 
   @override
   void execute() {
@@ -62,7 +69,7 @@ class _ExitMenu extends Menu{
 }
 
 class _AddNodeMenu extends Entry{
-  _AddNodeMenu() : super("Add a new node to tree"){
+  _AddNodeMenu() : super(Strings.menuOptAddNode){
     addField(Const.nodeIdField);
     addField(Const.nodeNameField);
   }
@@ -79,13 +86,12 @@ class _AddNodeMenu extends Entry{
 
 
 class _NodeOperationMenu extends Entry {
-  final void Function(Node node) _operation;
+  final void Function(Node node) operation;
 
   _NodeOperationMenu(
       {required String name,
-      required void Function(Node node) operation})
-      : _operation = operation,
-        super(name) {
+      required this.operation})
+      : super(name) {
     addField(Const.nodeIdField);
   }
 
@@ -93,19 +99,17 @@ class _NodeOperationMenu extends Entry {
   void execute() {
     super.execute();
     int nodeId = fields[Const.nodeIdSerial]?.value as int;
-    _operation(Store.instance.graph.getNodeWithId(nodeId));
+    operation(Store.instance.graph.getNodeWithId(nodeId));
   }
 }
 
 class _ParentChildOperationMenu extends Entry {
-  final void Function({required int parentId, required int childId}) _operation;
+  final void Function({required int parentId, required int childId}) operation;
 
   _ParentChildOperationMenu(
       {required String name,
-      required void Function({required int parentId, required int childId})
-          operation})
-      : _operation = operation,
-        super(name) {
+      required this.operation})
+      : super(name) {
     addField(Const.parentIdField);
     addField(Const.childIdField);
   }
@@ -115,6 +119,6 @@ class _ParentChildOperationMenu extends Entry {
     super.execute();
     int parentId = fields[Const.parentIdSerial]?.value as int;
     int childId = fields[Const.childIdSerial]?.value as int;
-    _operation(parentId: parentId, childId: childId);
+    operation(parentId: parentId, childId: childId);
   }
 }

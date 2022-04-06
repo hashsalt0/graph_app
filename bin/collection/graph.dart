@@ -56,13 +56,13 @@ class Graph {
   /// Adds a Depedency(Edge) to the graph between two nodes (parent to child)
   /// params [parentId] Id of the parent node
   /// params [childId] Id of the child node
-  /// throws [DepedencyNotFound] when there is no edge in between parent and child node
+  /// throws [DepedencyNotFoundException] when there is no edge in between parent and child node
   void removeDepedency({required int parentId, required int childId}) {
     Node childNode = getNodeWithId(childId);
     Node parentNode = getNodeWithId(parentId);
 
     if(childNode.parent.contains(parentNode) == false && parentNode.children.contains(childNode) == false) {
-      throw DepedencyNotFound("There is no Depedency in b/w $childId and $parentNode");
+      throw DepedencyNotFoundException("There is no Depedency in b/w $childId and $parentNode");
     }
     childNode.parent.remove(parentNode);
     parentNode.children.remove(childNode);

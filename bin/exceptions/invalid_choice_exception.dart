@@ -1,3 +1,4 @@
+import '../utils/strings.dart';
 import 'graph_app_exception.dart';
 import '../menu/base/choice.dart';
 
@@ -6,5 +7,5 @@ import '../menu/base/choice.dart';
 
 class InvalidChoiceException extends GraphAppException {
   InvalidChoiceException(cause)
-      : super("Enter the option as specified by the prompt.", cause);
+      : super(Strings.invalidChoiceExceptionMessage, cause);
 }

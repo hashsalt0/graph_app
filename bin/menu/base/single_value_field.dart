@@ -1,7 +1,6 @@
 import '../../utils/input.dart';
 import '../../utils/logger.dart';
 import '../../utils/utils.dart';
-import '../../utils/validations.dart';
 import 'field.dart';
 import 'entry.dart';
 
@@ -10,11 +9,10 @@ import 'entry.dart';
 class SingleValueField<T> extends Field<T> {
 
   /// Single value field default valdiation is none ie. accepts any value 
-  SingleValueField({required String name, required String message, required this.cast, this.validate = Validations.none })
-      : super(name: name, message: message);
+  SingleValueField({required String name, required String message, required this.cast })
+      :super(name: name, message: message);
 
   /// validate function (not necessary to provide)
-  final bool Function(T? castedValue) validate;
 
   /// cast function for converting the string read to [T] (not necessary to provide)
   final T? Function(String? recivedValue) cast;
@@ -25,11 +23,11 @@ class SingleValueField<T> extends Field<T> {
   T? readValue() {
     Log.info("$message :: ");
     String? line = Input.readLine();
-    if (_validateTry(line) == false) return readValue();
+    if (!_validateTry(line)) return readValue();
     return value = cast(line);
   }
 
   bool _validateTry(String? line) {
-    return Utils.catchError(() => {validate(cast(line))});
+    return Utils.catchError(() => cast(line));
   }
 }

@@ -1,5 +1,6 @@
+import '../utils/strings.dart';
 import 'graph_app_exception.dart';
 
-class DepedencyNotFound extends GraphAppException {
-  DepedencyNotFound(String cause) : super("No Depedency Found", cause);
+class DepedencyNotFoundException extends GraphAppException {
+  DepedencyNotFoundException(String cause) : super(Strings.depedencyNotFoundExceptionMessage, cause);
 }
