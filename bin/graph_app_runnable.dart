@@ -6,10 +6,8 @@ import 'utils/store.dart';
 import 'utils/utils.dart';
 
 class GraphAppRunnable {
-  GraphAppRunnable();
-
   /// executes the main menu indefinitely
-  void run() {
+  static void run() {
     while (Store.instance.isRunning) {
       Utils.catchError(() {
         Log.help("\n"+"-"*stdout.terminalColumns+"\n");
